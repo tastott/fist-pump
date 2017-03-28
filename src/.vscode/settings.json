@@ -6,5 +6,6 @@
         "**/.hg": true,
         "**/.DS_Store": true,
         "**/*.js": {"when": "$(basename).ts"}
-    }
+    },
+    "tslint.enable": true
 }
