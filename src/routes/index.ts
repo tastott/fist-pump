@@ -1,9 +1,16 @@
-import express = require("express");
-const router = express.Router();
+import { Request, Response } from "express";
+import { injectable } from "inversify";
+import { Controller, Get } from "inversify-express-utils";
 
-/* GET home page. */
-router.get("/", (req, res, next) => {
-  res.render("index", { title: "Express" });
-});
+@injectable()
+@Controller("/")
+export class IndexController {
 
-export default router;
+    @Get("/")
+    public Get(request: Request, response: Response): void {
+        response.render("index", { title: "Express" });
+    }
+
+}
+
+export default IndexController;
