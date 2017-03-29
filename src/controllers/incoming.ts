@@ -1,13 +1,13 @@
-import { Request } from "express";
+import { Request, Response } from "express";
 import { inject, injectable } from "inversify";
 import { Controller, Post } from "inversify-express-utils";
-import { TestService } from "../services/test-service";
+import { EventService } from "../services/event-service";
 
 @injectable()
 @Controller("/incoming")
 export class IncomingController {
 
-    constructor( @inject(TestService) private testService: TestService) { }
+    constructor( @inject(EventService) private eventService: EventService) { }
 
     // @Get('/')
     // public getUsers(): IUser[] {
@@ -20,10 +20,9 @@ export class IncomingController {
     // }
 
     @Post("/github")
-    public github(request: Request): object {
-        return {
-            Blah: this.testService.Foo(request.body.number)
-        };
+    public github(request: Request, response: Response): void {
+        this.eventService.Emit(request.body);
+        response.sendStatus(200);
     }
 }
 

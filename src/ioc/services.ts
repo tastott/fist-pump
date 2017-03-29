@@ -1,7 +1,7 @@
 import { ContainerModule} from "inversify";
 
-import {TestService} from "../services/test-service";
+import {EventService} from "../services/event-service";
 
 export default new ContainerModule(bind => {
-    bind(TestService).toSelf();
+    bind(EventService).toSelf().inSingletonScope();
 });
