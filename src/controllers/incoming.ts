@@ -20,8 +20,10 @@ export class IncomingController {
     // }
 
     @Post("/github")
-    public github(request: Request): number {
-        return this.testService.Foo(request.body.number);
+    public github(request: Request): object {
+        return {
+            Blah: this.testService.Foo(request.body.number)
+        };
     }
 }
 

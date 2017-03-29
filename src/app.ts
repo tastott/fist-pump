@@ -1,21 +1,12 @@
-import "reflect-metadata";
-import { interfaces, InversifyExpressServer, TYPE } from "inversify-express-utils";
-import { Container } from "inversify";
 import express = require("express");
+import { InversifyExpressServer } from "inversify-express-utils";
 import path = require("path");
-const favicon = require("serve-favicon");
+// const favicon = require("serve-favicon");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 
-import IndexController from "./routes/index";
-import IncomingController from "./routes/incoming";
-import {TestService} from "./services/test-service";
-
-const container = new Container();
-container.bind<interfaces.Controller>(TYPE.Controller).to(IncomingController).whenTargetNamed("IncomingController");
-container.bind<interfaces.Controller>(TYPE.Controller).to(IndexController).whenTargetNamed("IndexController");
-container.bind(TestService).toSelf();
+import container from "./ioc/container";
 
 const server = new InversifyExpressServer(container);
 server.setConfig((app) => {

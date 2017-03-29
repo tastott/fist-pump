@@ -6,6 +6,7 @@
             "double"
         ],
         "no-var-requires": false,
-        "no-unused-variable": true
+        "no-unused-variable": true,
+        "arrow-parens": false
     }
 }

@@ -4,7 +4,7 @@ import { Controller, Get } from "inversify-express-utils";
 
 @injectable()
 @Controller("/")
-export class IndexController {
+export class HomeController {
 
     @Get("/")
     public Get(request: Request, response: Response): void {
@@ -13,4 +13,4 @@ export class IndexController {
 
 }
 
-export default IndexController;
+export default HomeController;
