@@ -1,3 +1,1 @@
-export interface Event {
-    Description: string;
-}
+export {Event} from "../../../Models/event";

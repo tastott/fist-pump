@@ -1,25 +1,29 @@
 import * as React from "react";
+import { lazyInject } from "../ioc/container";
+import { EventClient } from "../services/event-client";
 import {AppState} from "../state/app";
-import {Activity} from "./activity";
+import { Activity } from "./activity";
 
 export interface AppProps {
 
 }
 
 export class App extends React.Component<AppProps, AppState> {
+
+    @lazyInject(EventClient)
+    private eventClient: EventClient;
+
     constructor(props: AppProps) {
         super(props);
         this.state = {
             Events: []
         };
 
-        const es = new EventSource("/outgoing");
-
-        es.onmessage = (event: sse.IOnMessageEvent)  => {
+        this.eventClient.Subscribe(event => {
             this.setState(previousState => ({
-                Events: previousState.Events.slice().concat([JSON.parse(event.data)])
+                Events: previousState.Events.slice().concat([event])
             }));
-        };
+        });
     }
 
     public render() {

@@ -1,16 +1,7 @@
 import { injectable } from "inversify";
 import uuid = require("node-uuid");
+import { Event, EventCallback, Subscription } from "../models/event";
 
-export interface Event {
-}
-
-export interface EventCallback {
-    (event: Event): void;
-}
-
-export interface Subscription {
-    Dispose(): void;
-}
 
 @injectable()
 export class EventService {
