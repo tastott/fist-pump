@@ -12,4 +12,4 @@ eventClient.Subscribe(event => {
     notificationService.Notify("Something happened!", event.Description);
 });
 
-ReactDOM.render(<App />, document.body);
+ReactDOM.render(<App />, document.getElementById("container"));

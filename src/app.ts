@@ -1,12 +1,14 @@
 import express = require("express");
+import session = require("express-session");
 import { InversifyExpressServer } from "inversify-express-utils";
 import path = require("path");
 // const favicon = require("serve-favicon");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
-
+import passport = require("passport");
 import container from "./ioc/container";
+import ConfigureAuth from "./auth";
 
 const server = new InversifyExpressServer(container);
 server.setConfig((app) => {
@@ -21,7 +23,9 @@ server.setConfig((app) => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, "public")));
-
+  app.use(session({secret: "blsh"}));
+  app.use(ConfigureAuth());
+  app.use(passport.session());
   // // catch 404 and forward to error handler
   // app.use((req, res, next) => {
   //   let err = new Error("Not Found");
