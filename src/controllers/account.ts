@@ -19,6 +19,11 @@ export class AccountController {
         response.redirect("/");
     }
 
+    @Get("/logout")
+    public Logout(request: Request, response: Response): void {
+        request.logout();
+        response.redirect("/");
+    }
 }
 
 export default AccountController;

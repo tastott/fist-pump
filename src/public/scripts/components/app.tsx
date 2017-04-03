@@ -3,6 +3,7 @@ import { lazyInject } from "../ioc/container";
 import { EventClient } from "../services/event-client";
 import {AppState} from "../state/app";
 import { Activity } from "./activity";
+import { UserControl } from "./user";
 
 export interface AppProps {
 
@@ -30,6 +31,7 @@ export class App extends React.Component<AppProps, AppState> {
         return (
         <div>
             <h1>Fist pump</h1>
+            <UserControl />
             {this.state.Events.map(event =>
                 <Activity Event={event} />
             )}

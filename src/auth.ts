@@ -1,6 +1,7 @@
 import passport = require("passport");
 import { Strategy as LocalStrategy } from "passport-local";
 import { Handler } from "express";
+import { User } from "./models/user";
 
 function ConfigureAuth(): Handler {
     passport.use(new LocalStrategy(
@@ -15,10 +16,11 @@ function ConfigureAuth(): Handler {
             //   }
             //   return done(null, user);
             // });
+            const user: User = {
+                Username: username
+            };
 
-            done(null, {
-                username
-            });
+            done(null, user);
         }
     ));
 
