@@ -33,9 +33,8 @@ function ConfigureAuth(): Handler {
     });
 
     passport.deserializeUser((input, cb) => {
-        cb(null, JSON.parse(<any>input))
+        cb(null, JSON.parse(input as any));
     });
-
 
     return passport.initialize();
 }

@@ -7,8 +7,8 @@ const logger = require("morgan");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 import passport = require("passport");
-import container from "./ioc/container";
 import ConfigureAuth from "./auth";
+import container from "./ioc/container";
 
 const server = new InversifyExpressServer(container);
 server.setConfig((app) => {
