@@ -1,7 +1,10 @@
 import passport = require("passport");
-import { Strategy as LocalStrategy } from "passport-local";
+import {ensureLoggedIn} from "connect-ensure-login";
 import { Handler } from "express";
+import { Strategy as LocalStrategy } from "passport-local";
 import { User } from "./models/user";
+
+export const Authorize: Handler = ensureLoggedIn("/account/login");
 
 function ConfigureAuth(): Handler {
     passport.use(new LocalStrategy(
@@ -17,6 +20,7 @@ function ConfigureAuth(): Handler {
             //   return done(null, user);
             // });
             const user: User = {
+                TeamId: "test",
                 Username: username
             };
 

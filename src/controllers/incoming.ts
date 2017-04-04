@@ -19,9 +19,10 @@ export class IncomingController {
     //     return this.userService.getUser(request.params.id);
     // }
 
-    @Post("/github")
+    @Post("/github/:teamId")
     public github(request: Request, response: Response): void {
-        this.eventService.Emit(request.body);
+        // TODO verify team id?
+        this.eventService.Emit(request.body, request.params.teamId);
         response.sendStatus(200);
     }
 }

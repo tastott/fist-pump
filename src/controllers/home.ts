@@ -1,12 +1,10 @@
 import { Request, Response, Handler } from "express";
 import { injectable } from "inversify";
 import { Controller, Get } from "inversify-express-utils";
-import ConfigureAuth from "../auth"; 
-import passport = require("passport");
-import {ensureLoggedIn} from "connect-ensure-login";
+import {Authorize} from "../auth"; 
 
 @injectable()
-@Controller("/", ensureLoggedIn("/account/login"))
+@Controller("/", Authorize)
 export class HomeController {
 
     @Get("/")

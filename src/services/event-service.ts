@@ -7,26 +7,36 @@ import { Event, EventCallback, Subscription } from "../models/event";
 export class EventService {
 
     private callbacks: {
-        [key: string]: EventCallback;
-    }
+        [teamId: string]: {
+            [key: string]: EventCallback;
+        }
+    };
 
     constructor() {
         this.callbacks = {};
     }
 
-    public Emit<T extends Event>(event: T): void {
-        Object.keys(this.callbacks)
+    public Emit<T extends Event>(event: T, teamId: string): void {
+        const teamCallbacks = this.callbacks[teamId] || {};
+        Object.keys(teamCallbacks)
             .forEach(id => {
-                this.callbacks[id](event);
+                teamCallbacks[id](event);
             });
     }
 
-    public Subscribe(callback: EventCallback): Subscription {
+    public Subscribe(callback: EventCallback, teamId: string): Subscription {
         const id = uuid.v4();
-        this.callbacks[id] = callback;
+        if (!this.callbacks[teamId]){
+            this.callbacks[teamId] = {};
+        }
+        
+        this.callbacks[teamId][id] = callback;
+    
         return {
             Dispose: () => {
-                delete this.callbacks[id];
+                if (this.callbacks[teamId]){
+                    delete this.callbacks[teamId][id];
+                }
             }
         };
     }
