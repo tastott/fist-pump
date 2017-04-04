@@ -11,6 +11,7 @@
         "interface-name": [false],
         "trailing-comma": [
             false
-        ]
+        ],
+        "object-literal-sort-keys": false
     }
 }

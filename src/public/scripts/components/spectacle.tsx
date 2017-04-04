@@ -1,11 +1,11 @@
 import * as React from "react";
-import {Event} from "../state/event";
+import {Spectacle} from "../state/spectacle";
 
 export interface ActivityProps {
-    Event: Event;
+    Model: Spectacle;
 }
 
-export class Activity extends React.Component<ActivityProps, any> {
+export class SpectacleControl extends React.Component<ActivityProps, any> {
     constructor(props: ActivityProps) {
         super(props);
     }

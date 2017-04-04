@@ -1,10 +1,11 @@
 import {injectable} from "inversify";
-import {EventCallback, Subscription} from "../../../Models/event";
+import { EventCallback, Subscription } from "../../../Models/event";
+import { SpectacleCallback } from "../../../models/spectacle";
 
 @injectable()
-export class EventClient {
+export class SpectacleClient {
 
-    private callbacks: EventCallback[];
+    private callbacks: SpectacleCallback[];
 
     constructor() {
         this.callbacks = [];
@@ -15,7 +16,7 @@ export class EventClient {
         };
     }
 
-    public Subscribe(callback: EventCallback): Subscription {
+    public Subscribe(callback: SpectacleCallback): Subscription {
         this.callbacks.push(callback);
         return {
             Dispose: () => {

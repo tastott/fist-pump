@@ -3,9 +3,10 @@ import { Request, Response } from "express";
 const SSE: { new(): ExpressSseEmitter} = require("express-sse");
 import { inject, injectable } from "inversify";
 import { Controller, Get } from "inversify-express-utils";
-import { EventService } from "../services/event-service";
 import { Authorize } from "../auth";
 import { User } from "../models/user";
+import { EventService } from "../services/event-service";
+import { SpectacleService } from "../services/spectacle-service";
 
 interface ExpressSseEmitter extends EventEmitter {
     init(request: Request, response: Response): void;
@@ -17,7 +18,8 @@ interface ExpressSseEmitter extends EventEmitter {
 export class OutgoingController {
 
     constructor(
-        @inject(EventService) private eventService: EventService
+        @inject(EventService) private eventService: EventService,
+        @inject(SpectacleService) private spectacleService: SpectacleService
     ) {
 
      }
@@ -27,7 +29,10 @@ export class OutgoingController {
         const user: User = request.user;
         const sse = new SSE();
         sse.init(request, response);
-        const subscription = this.eventService.Subscribe(event => sse.send(event), user.TeamId);
+        const subscription = this.eventService.Subscribe(event => {
+            const spectacle = this.spectacleService.GetSpectacle(event);
+            sse.send(spectacle);
+        }, user.TeamId);
         sse.on("removeListener", () => {
             if (sse.listenerCount("send") < 1) {
                 subscription.Dispose();

@@ -1,7 +1,6 @@
 import * as React from "react";
-import { lazyInject } from "../ioc/container";
-import { EventClient } from "../services/event-client";
 import { User } from "../../../models/user";
+import { lazyInject } from "../ioc/container";
 import { AccountService } from "../services/account-service";
 
 export interface UserState {
@@ -26,7 +25,7 @@ export class UserControl extends React.Component<any, UserState> {
     }
 
     public render() {
-        if(this.state.User) {
+        if (this.state.User) {
             return (
                 <div>
                     <label>{this.state.User.Username}</label>

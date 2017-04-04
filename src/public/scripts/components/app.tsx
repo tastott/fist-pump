@@ -1,8 +1,8 @@
 import * as React from "react";
 import { lazyInject } from "../ioc/container";
-import { EventClient } from "../services/event-client";
+import { SpectacleClient } from "../services/spectacle-client";
 import {AppState} from "../state/app";
-import { Activity } from "./activity";
+import { SpectacleControl } from "./spectacle";
 import { UserControl } from "./user";
 
 export interface AppProps {
@@ -11,18 +11,18 @@ export interface AppProps {
 
 export class App extends React.Component<AppProps, AppState> {
 
-    @lazyInject(EventClient)
-    private eventClient: EventClient;
+    @lazyInject(SpectacleClient)
+    private spectacleClient: SpectacleClient;
 
     constructor(props: AppProps) {
         super(props);
         this.state = {
-            Events: []
+            Spectacles: []
         };
 
-        this.eventClient.Subscribe(event => {
+        this.spectacleClient.Subscribe(event => {
             this.setState(previousState => ({
-                Events: previousState.Events.slice().concat([event])
+                Events: previousState.Spectacles.slice().concat([event])
             }));
         });
     }
@@ -32,8 +32,8 @@ export class App extends React.Component<AppProps, AppState> {
         <div>
             <h1>Fist pump</h1>
             <UserControl />
-            {this.state.Events.map(event =>
-                <Activity Event={event} />
+            {this.state.Spectacles.map(spectacle =>
+                <SpectacleControl Model={spectacle} />
             )}
         </div>
         );
