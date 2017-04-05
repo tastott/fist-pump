@@ -1,6 +1,5 @@
 import { Container } from "inversify";
 import "reflect-metadata";
-
 import controllersModule from "./controllers";
 import servicesModule from "./services";
 

@@ -3,6 +3,7 @@ import {Event} from "./event";
 export interface FixedGifSpectacle {
     Type: "FixedGif";
     Url: string;
+    Name: string;
     Event: Event;
 }
 

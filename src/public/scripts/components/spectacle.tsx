@@ -14,7 +14,7 @@ export class SpectacleControl extends React.Component<ActivityProps, any> {
         const spectacle = this.props.Model;
         switch (spectacle.Type) {
             case "FixedGif":
-                return (<img src={spectacle.Url} />);
+                return (<img src={spectacle.Url} title={spectacle.Name} />);
 
             default:
                 return null;

@@ -1,9 +1,11 @@
 import { ContainerModule} from "inversify";
-import { SpectacleService } from "./../services/spectacle-service";
-
+import {TYPES} from "../constants";
 import {EventService} from "../services/event-service";
+import { GifSelectionStrategy, GifStoreSpectacleService, ISpectacleService } from "./../services/spectacle-service";
 
 export default new ContainerModule(bind => {
     bind(EventService).toSelf().inSingletonScope();
-    bind(SpectacleService).toSelf();
+    bind<ISpectacleService>(TYPES.ISpectacleService).toDynamicValue(context => {
+        return new GifStoreSpectacleService(GifSelectionStrategy.Cyclic);
+    });
 });
