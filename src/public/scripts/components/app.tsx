@@ -22,7 +22,7 @@ export class App extends React.Component<AppProps, AppState> {
 
         this.spectacleClient.Subscribe(event => {
             this.setState(previousState => ({
-                Events: previousState.Spectacles.slice().concat([event])
+                Spectacles: previousState.Spectacles.slice().concat([event])
             }));
         });
     }
