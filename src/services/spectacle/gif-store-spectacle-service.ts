@@ -1,7 +1,8 @@
 import { injectable } from "inversify";
-import { Spectacle } from "../models/spectacle";
-import { ThrowUnrecognizedError } from "../utilities/errors";
-import { Event } from "./../models/event";
+import { Event } from "../../models/event";
+import { Spectacle } from "../../models/spectacle";
+import { ThrowUnrecognizedError } from "../../utilities/errors";
+import { ISpectacleService } from "./spectacle-service";
 
 interface Gif {
     Name: string;
@@ -12,17 +13,13 @@ interface Gifs {
     success: Gif[];
 }
 
-export interface ISpectacleService {
-    GetSpectacle(event: Event): Promise<Spectacle>;
-}
-
 export enum GifSelectionStrategy {
     Cyclic,
     Random
 }
 
 @injectable()
-export class GifStoreSpectacleService {
+export class GifStoreSpectacleService implements ISpectacleService {
     private gifs: Gifs;
     private previousGifIndex: {
         [type in keyof Gifs]: number;

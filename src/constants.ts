@@ -1,3 +1,4 @@
 export const TYPES = {
-    ISpectacleService: Symbol("ISpectacleService")
+    ISpectacleService: Symbol("ISpectacleService"),
+    IHttpService: Symbol("IHttpService")
 };

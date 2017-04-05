@@ -7,7 +7,7 @@ import { Authorize } from "../auth";
 import { TYPES } from "../constants";
 import { User } from "../models/user";
 import { EventService } from "../services/event-service";
-import { ISpectacleService } from "../services/spectacle-service";
+import { ISpectacleService } from "../services/spectacle/spectacle-service";
 
 interface ExpressSseEmitter extends EventEmitter {
     init(request: Request, response: Response): void;
