@@ -4,6 +4,8 @@ import { SpectacleClient } from "../services/spectacle-client";
 import {AppState} from "../state/app";
 import { SpectacleControl } from "./spectacle";
 import { UserControl } from "./user";
+import { AddTemporarily } from "../utilities/react";
+import { FixedGifSpectacle } from "../../../models/spectacle";
 
 export interface AppProps {
 
@@ -21,9 +23,10 @@ export class App extends React.Component<AppProps, AppState> {
         };
 
         this.spectacleClient.Subscribe(event => {
-            this.setState(previousState => ({
-                Spectacles: previousState.Spectacles.slice().concat([event])
-            }));
+            AddTemporarily<AppState, "Spectacles", FixedGifSpectacle>(prev => this.setState(prev), "Spectacles", event, 10000);
+            // this.setState(previousState => ({
+            //     Spectacles: previousState.Spectacles.concat([event])
+            // }));
         });
     }
 
