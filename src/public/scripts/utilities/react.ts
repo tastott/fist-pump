@@ -1,4 +1,4 @@
-type SetState<T> = (setter: (previousState: T) => Partial<T>) => void;
+export type SetState<T> = (setter: (previousState: T) => Partial<T>) => void;
 
 export function AddTemporarily<TState, TProp extends keyof TState, TItem>(
     setState: SetState<TState>,
@@ -21,4 +21,14 @@ export function AddTemporarily<TState, TProp extends keyof TState, TItem>(
         }
         , durationMs
     );
+}
+
+export function AddTemporarilyTest<TState, TProp extends keyof TState, TItem>(
+    state: TState,
+    prop: TProp,
+    item: TItem,
+    durationMs: number
+): void
+{
+
 }

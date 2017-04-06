@@ -2,10 +2,11 @@ import * as React from "react";
 import { lazyInject } from "../ioc/container";
 import { SpectacleClient } from "../services/spectacle-client";
 import {AppState} from "../state/app";
+import { WithKey } from "../state/keyed";
+import { AddTemporarily} from "../utilities/react";
 import { SpectacleControl } from "./spectacle";
 import { UserControl } from "./user";
-import { AddTemporarily } from "../utilities/react";
-import { FixedGifSpectacle } from "../../../models/spectacle";
+
 
 export interface AppProps {
 
@@ -23,10 +24,7 @@ export class App extends React.Component<AppProps, AppState> {
         };
 
         this.spectacleClient.Subscribe(event => {
-            AddTemporarily<AppState, "Spectacles", FixedGifSpectacle>(prev => this.setState(prev), "Spectacles", event, 10000);
-            // this.setState(previousState => ({
-            //     Spectacles: previousState.Spectacles.concat([event])
-            // }));
+           AddTemporarily(this.setState2, "Spectacles", WithKey(event), 10000);
         });
     }
 
@@ -36,9 +34,13 @@ export class App extends React.Component<AppProps, AppState> {
             <h1>Fist pump</h1>
             <UserControl />
             {this.state.Spectacles.map(spectacle =>
-                <SpectacleControl Model={spectacle} />
+                <SpectacleControl Model={spectacle} key={spectacle.Key} />
             )}
         </div>
         );
+    }
+
+    private setState2(setter: (previous: AppState) => Partial<AppState>): void {
+        this.setState(setter);
     }
 }
