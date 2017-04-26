@@ -24,11 +24,7 @@ export class App extends React.Component<AppProps, AppState> {
         };
 
         this.spectacleClient.Subscribe(event => {
-<<<<<<< HEAD
-            AddTemporarily(this, "Spectacles", event, 20000);
-=======
-           AddTemporarily(this.setState2, "Spectacles", WithKey(event), 10000);
->>>>>>> 7c55a4718b13989e38f886b6fe2c4029cf57fe3c
+            AddTemporarily(this, "Spectacles", WithKey(event), 20000);
         });
     }
 
@@ -42,14 +38,5 @@ export class App extends React.Component<AppProps, AppState> {
             )}
         </div>
         );
-    }
-
-<<<<<<< HEAD
-    private setState2(p) {
-        
-=======
-    private setState2(setter: (previous: AppState) => Partial<AppState>): void {
-        this.setState(setter);
->>>>>>> 7c55a4718b13989e38f886b6fe2c4029cf57fe3c
     }
 }

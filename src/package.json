@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "start": "opn http://localhost:3000 && node ./bin/www",
+    "ngrok": "opn http://localhost:4040/inspect/http && ngrok http 3000",
+    "start-ext": "node_modules\\.bin\\concurrently -k \"npm run start\" \"npm run ngrok\"",
     "compile": "node_modules\\.bin\\tsc -p ./",
     "build": "npm run compile && node_modules\\.bin\\webpack"
   },
@@ -42,6 +44,7 @@
     "superagent": "^3.5.2"
   },
   "devDependencies": {
+    "concurrently": "^3.4.0",
     "opn-cli": "^3.1.0",
     "ts-loader": "^2.0.3",
     "tslint": "^4.5.1",
