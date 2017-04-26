@@ -23,10 +23,7 @@ export class App extends React.Component<AppProps, AppState> {
         };
 
         this.spectacleClient.Subscribe(event => {
-            AddTemporarily<AppState, "Spectacles", FixedGifSpectacle>(prev => this.setState(prev), "Spectacles", event, 10000);
-            // this.setState(previousState => ({
-            //     Spectacles: previousState.Spectacles.concat([event])
-            // }));
+            AddTemporarily(this, "Spectacles", event, 20000);
         });
     }
 
@@ -40,5 +37,9 @@ export class App extends React.Component<AppProps, AppState> {
             )}
         </div>
         );
+    }
+
+    private setState2(p) {
+        
     }
 }
