@@ -2,10 +2,11 @@ import * as React from "react";
 import { lazyInject } from "../ioc/container";
 import { SpectacleClient } from "../services/spectacle-client";
 import {AppState} from "../state/app";
+import { WithKey } from "../state/keyed";
+import { AddTemporarily} from "../utilities/react";
 import { SpectacleControl } from "./spectacle";
 import { UserControl } from "./user";
-import { AddTemporarily } from "../utilities/react";
-import { FixedGifSpectacle } from "../../../models/spectacle";
+
 
 export interface AppProps {
 
@@ -23,7 +24,11 @@ export class App extends React.Component<AppProps, AppState> {
         };
 
         this.spectacleClient.Subscribe(event => {
+<<<<<<< HEAD
             AddTemporarily(this, "Spectacles", event, 20000);
+=======
+           AddTemporarily(this.setState2, "Spectacles", WithKey(event), 10000);
+>>>>>>> 7c55a4718b13989e38f886b6fe2c4029cf57fe3c
         });
     }
 
@@ -33,13 +38,18 @@ export class App extends React.Component<AppProps, AppState> {
             <h1>Fist pump</h1>
             <UserControl />
             {this.state.Spectacles.map(spectacle =>
-                <SpectacleControl Model={spectacle} />
+                <SpectacleControl Model={spectacle} key={spectacle.Key} />
             )}
         </div>
         );
     }
 
+<<<<<<< HEAD
     private setState2(p) {
         
+=======
+    private setState2(setter: (previous: AppState) => Partial<AppState>): void {
+        this.setState(setter);
+>>>>>>> 7c55a4718b13989e38f886b6fe2c4029cf57fe3c
     }
 }
