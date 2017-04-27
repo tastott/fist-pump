@@ -1,4 +1,7 @@
+import { Team } from "./team";
+
 export interface User {
+    Id: string;
     Username: string;
-    TeamId: string;
+    Team: Team;
 }
