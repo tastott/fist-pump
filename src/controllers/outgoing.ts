@@ -35,7 +35,7 @@ export class OutgoingController {
             this.spectacleService.GetSpectacle(event)
                 .then(spectacle =>  sse.send(spectacle))
                 .catch(error => { /* TODO: Log error */ });
-        }, user.TeamId);
+        }, user.Team.Id);
 
         sse.on("removeListener", () => {
             if (sse.listenerCount("send") < 1) {

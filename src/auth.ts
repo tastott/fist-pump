@@ -3,10 +3,11 @@ import {ensureLoggedIn} from "connect-ensure-login";
 import { Handler } from "express";
 import { Strategy as LocalStrategy } from "passport-local";
 import { User } from "./models/user";
+import { IUserRepository } from "./repositories/user-repository";
 
 export const Authorize: Handler = ensureLoggedIn("/account/login");
 
-function ConfigureAuth(): Handler {
+function ConfigureAuth(getUserRepo: () => IUserRepository): Handler {
     passport.use(new LocalStrategy(
         (username, password, done) => {
             // User.findOne({ username: username }, function (err, user) {
@@ -19,12 +20,11 @@ function ConfigureAuth(): Handler {
             //   }
             //   return done(null, user);
             // });
-            const user: User = {
-                TeamId: "test",
-                Username: username
-            };
-
-            done(null, user);
+            const userRepo = getUserRepo();
+            userRepo.AddTeam({ Name: "My Team"})
+                .then(team => userRepo.AddUser(team.Id, { Username: username }))
+                .then(user => done(null, user))
+                .catch(error => done(error));
         }
     ));
 

@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 import passport = require("passport");
 import ConfigureAuth from "./auth";
 import container from "./ioc/container";
+import { TYPES } from "./constants";
+import { IUserRepository } from "./repositories/user-repository";
 
 const server = new InversifyExpressServer(container);
 server.setConfig((app) => {
@@ -24,7 +26,7 @@ server.setConfig((app) => {
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, "public")));
   app.use(session({secret: "blsh"}));
-  app.use(ConfigureAuth());
+  app.use(ConfigureAuth(() => container.get<IUserRepository>(TYPES.IUserRepository)));
   app.use(passport.session());
   // // catch 404 and forward to error handler
   // app.use((req, res, next) => {
