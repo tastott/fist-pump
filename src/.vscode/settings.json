@@ -9,5 +9,6 @@
         "**/*?.js": {"when": "$(basename).tsx"},
         "**/*.js.map": true
     },
-    "tslint.enable": true
+    "tslint.enable": true,
+    "files.trimTrailingWhitespace": true
 }
