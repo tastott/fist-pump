@@ -6,7 +6,9 @@ import { User } from "../models/user";
 import { IUserRepository } from "./user-repository";
 
 interface StoredUser extends Pick<User, "Username"> {
-    TeamId: string;
+    TeamIds: {
+        [key: string]: boolean;
+    };
 }
 
 interface StoredTeam extends Pick<Team, "Name"> {
@@ -46,15 +48,12 @@ export class DiskDbUserRepository implements IUserRepository {
     public GetUser(id: string): Promise<User> {
         const storedUser = this.users.findOne({_id: id});
         if (storedUser) {
-            return this.GetTeam(storedUser.TeamId)
-                .then(team => {
-                    const user: User = {
-                        ...storedUser,
-                        Id: id,
-                        Team: team
-                    };
-                    return user;
-                });
+            const user: User = {
+                ...storedUser,
+                Id: id,
+                Teams: []
+            };
+            return Promise.resolve(user);
         } else {
             return Promise.reject(`User not found: ${id}.`);
         }
@@ -68,26 +67,23 @@ export class DiskDbUserRepository implements IUserRepository {
             });
     }
 
-    public AddUser(teamId: string, user: Pick<User, "Username">): Promise<User> {
-        return this.GetStoredTeam(teamId)
-            .then(team => {
-                const storedUser = this.users.save({...user, TeamId: teamId});
-                const newUserIds = immutable.Map(team.UserIds)
-                    .set(storedUser._id, true)
-                    .toObject();
-                this.teams.update({_id: teamId}, {UserIds: newUserIds});
-                const result: User = {
-                    ...storedUser,
-                    Id: storedUser._id,
-                    Team: this.ToTeam({...team, UserIds: newUserIds})
-                };
-                return result;
-            });
+    public AddUser(user: Pick<User, "Username">): Promise<User> {
+        const storedUser = this.users.save({...user, TeamIds: {}});
+        const result: User = {
+            ...user,
+            Id: storedUser._id,
+            Teams: []
+        };
+        return Promise.resolve(result);
     }
 
     public AddTeam(team: Pick<Team, "Name">): Promise<Team> {
         const storedTeam = this.teams.save({...team, UserIds: {}});
         return Promise.resolve(this.ToTeam(storedTeam));
+    }
+
+    public SetUserTeam(userId: string, teamId: string): Promise<User> {
+        throw new Error("Not implemented");
     }
 
     private GetStoredTeam(id: string): Promise<StoredTeam & DiskDbItem> {

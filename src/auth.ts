@@ -4,36 +4,38 @@ import { Handler } from "express";
 import { Strategy as LocalStrategy } from "passport-local";
 import { User } from "./models/user";
 import { IUserRepository } from "./repositories/user-repository";
+import Auth0Strategy = require("passport-auth0");
+import { Auth0Service } from "./services/auth0-service";
 
 export const Authorize: Handler = ensureLoggedIn("/account/login");
 
-function ConfigureAuth(getUserRepo: () => IUserRepository): Handler {
-    passport.use(new LocalStrategy(
-        (username, password, done) => {
-            // User.findOne({ username: username }, function (err, user) {
-            //   if (err) { return done(err); }
-            //   if (!user) {
-            //     return done(null, false, { message: "Incorrect username." });
-            //   }
-            //   if (!user.validPassword(password)) {
-            //     return done(null, false, { message: "Incorrect password." });
-            //   }
-            //   return done(null, user);
-            // });
-            const userRepo = getUserRepo();
-            userRepo.AddTeam({ Name: "My Team"})
-                .then(team => userRepo.AddUser(team.Id, { Username: username }))
-                .then(user => done(null, user))
-                .catch(error => done(error));
-        }
-    ));
+function ConfigureAuth(getAuth0Service: () => Auth0Service): Handler {
+    const strategy = new Auth0Strategy({
+        domain:       process.env.AUTH0_DOMAIN,
+        clientID:     process.env.AUTH0_CLIENT_ID,
+        clientSecret: process.env.AUTH0_CLIENT_SECRET,
+        callbackURL:  process.env.AUTH0_CALLBACK_URL
+    },
+    (accessToken, refreshToken, extraParams, profile, done) => {
+        // accessToken is the token to call Auth0 API (not needed in the most cases)
+        // extraParams.id_token has the JSON Web Token
+        // profile has all the information from the user
 
-    passport.serializeUser((user, cb) => {
-        cb(null, JSON.stringify(user));
+        const auth0Service = getAuth0Service();
+        auth0Service.GetAppUser(profile)
+            .then(user => done(null, user))
+            .catch(error => done(error, null));
     });
 
-    passport.deserializeUser((input, cb) => {
-        cb(null, JSON.parse(input as any));
+    passport.use(strategy);
+
+    // This can be used to keep a smaller payload
+    passport.serializeUser((user, done) => {
+        done(null, user);
+    });
+
+    passport.deserializeUser((user, done) => {
+        done(null, user);
     });
 
     return passport.initialize();

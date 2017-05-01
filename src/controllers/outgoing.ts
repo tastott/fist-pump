@@ -31,15 +31,19 @@ export class OutgoingController {
         const sse = new SSE();
         sse.init(request, response);
 
-        const subscription = this.eventService.Subscribe(event => {
-            this.spectacleService.GetSpectacle(event)
-                .then(spectacle =>  sse.send(spectacle))
-                .catch(error => { /* TODO: Log error */ });
-        }, user.Team.Id);
+        const subscriptions = user.Teams.map(team =>
+            this.eventService.Subscribe(event => {
+                    this.spectacleService.GetSpectacle(event)
+                        .then(spectacle =>  sse.send(spectacle))
+                        .catch(error => { /* TODO: Log error */ });
+                },
+                team.Id
+            )
+        );
 
         sse.on("removeListener", () => {
             if (sse.listenerCount("send") < 1) {
-                subscription.Dispose();
+                subscriptions.forEach(subscription => subscription.Dispose());
             }
         });
     }

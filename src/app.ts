@@ -11,6 +11,10 @@ import ConfigureAuth from "./auth";
 import container from "./ioc/container";
 import { TYPES } from "./constants";
 import { IUserRepository } from "./repositories/user-repository";
+import dotenv = require("dotenv");
+import {Auth0Service} from "./services/auth0-service";
+
+dotenv.config();
 
 const server = new InversifyExpressServer(container);
 server.setConfig((app) => {
@@ -26,7 +30,7 @@ server.setConfig((app) => {
   app.use(cookieParser());
   app.use(express.static(path.join(__dirname, "public")));
   app.use(session({secret: "blsh"}));
-  app.use(ConfigureAuth(() => container.get<IUserRepository>(TYPES.IUserRepository)));
+  app.use(ConfigureAuth(() => container.get(Auth0Service)));
   app.use(passport.session());
   // // catch 404 and forward to error handler
   // app.use((req, res, next) => {
