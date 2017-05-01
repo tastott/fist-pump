@@ -2,12 +2,14 @@
   "name": "src",
   "version": "0.0.0",
   "private": true,
+  "main": "./bin/www",
   "scripts": {
     "start": "opn http://localhost:3000 && node ./bin/www",
     "ngrok": "opn http://localhost:4040/inspect/http && ngrok http 3000",
     "start-ext": "node_modules\\.bin\\concurrently -k \"npm run start\" \"npm run ngrok\"",
     "compile": "node_modules\\.bin\\tsc -p ./",
-    "build": "npm run compile && node_modules\\.bin\\webpack"
+    "build": "npm run compile && node_modules\\.bin\\webpack --watch",
+    "start-dev": "node_modules\\.bin\\concurrently -k \"npm run build\" \"npm run start\""
   },
   "dependencies": {
     "@types/auth0": "^2.4.0",
@@ -50,6 +52,7 @@
     "passport-local": "^1.0.0",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-router-dom": "^4.1.1",
     "reflect-metadata": "^0.1.10",
     "serve-favicon": "~2.3.2",
     "superagent": "^3.5.2"
